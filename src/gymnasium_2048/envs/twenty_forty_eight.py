@@ -196,10 +196,16 @@ class TwentyFortyEightEnv(gym.Env):
         return next_board, score
 
     @classmethod
-    def apply_action(cls, board: np.ndarray, action: ActType) -> tuple[np.ndarray, int]:
+    def apply_action(
+        cls,
+        board: np.ndarray,
+        action: ActType,
+    ) -> tuple[np.ndarray, int, bool]:
         """Apply an action to the board without spawning a new tile."""
         action_func = (cls._up, cls._right, cls._down, cls._left)
-        return action_func[action](board)
+        next_board, score = action_func[action](board)
+        is_legal = not np.array_equal(board, next_board)
+        return next_board, score, is_legal
 
     @staticmethod
     def is_terminated(board: np.ndarray) -> bool:
@@ -237,15 +243,16 @@ class TwentyFortyEightEnv(gym.Env):
             action
         ), f"{action!r} ({type(action)}) invalid"
 
-        next_board, self.step_score = self.apply_action(board=self.board, action=action)
+        next_board, self.step_score, self.is_legal = self.apply_action(
+            board=self.board,
+            action=action,
+        )
         self.total_score += self.step_score
-        if np.array_equal(self.board, next_board):
-            self.is_legal = False
-            self.illegal_count += 1
-        else:
-            self.is_legal = True
+        if self.is_legal:
             self.board = next_board
             self._spawn_tile()
+        else:
+            self.illegal_count += 1
 
         observation = self._get_obs()
         reward = self.step_score
