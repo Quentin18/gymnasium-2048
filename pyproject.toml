@@ -46,12 +46,16 @@ max-line-length = "88"
 max-line-length = 88
 disable = [
     "attribute-defined-outside-init",
+    "duplicate-code",
     "inconsistent-return-statements",
     "invalid-name",
     "missing-class-docstring",
+    "missing-function-docstring",
     "missing-module-docstring",
     "no-member",
+    "too-many-arguments",
     "too-many-instance-attributes",
+    "too-many-locals",
 ]
 
 [tool.pytest.ini_options]

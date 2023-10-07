@@ -35,14 +35,14 @@ def random_policy() -> None:
 
     env = gym.make(args.env, render_mode="human")
 
-    observation, info = env.reset(seed=args.seed)
+    env.reset(seed=args.seed)
 
     for _ in trange(args.n_timesteps, desc="Random policy"):
         action = env.action_space.sample()
-        observation, reward, terminated, truncated, info = env.step(action)
+        _, _, terminated, truncated, _ = env.step(action)
 
         if terminated or truncated:
-            observation, info = env.reset()
+            env.reset()
 
     env.close()
 

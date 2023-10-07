@@ -1,3 +1,4 @@
+# pylint: disable=protected-access,redefined-outer-name
 from unittest.mock import MagicMock, patch
 
 import gymnasium as gym
@@ -235,7 +236,7 @@ def test_step(
     env.board, action = test_input
 
     # When
-    observation, reward, terminated, truncated, info = env.step(action)
+    _, reward, terminated, truncated, info = env.step(action)
 
     # Then
     assert np.array_equal(env.board, expected[0])
