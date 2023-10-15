@@ -27,6 +27,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+training = [
+    "matplotlib==3.8.0",
+    "tqdm==4.66.1",
+]
 testing = ["pytest"]
 quality = ["black[d]", "isort", "pylint"]
 
