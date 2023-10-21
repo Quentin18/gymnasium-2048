@@ -6,7 +6,9 @@ import pytest
 
 from gymnasium_2048.agents.ntuple import NTupleNetwork
 from gymnasium_2048.agents.ntuple.factory import (
+    get_all_corners_3_tuples,
     get_all_rectangles_tuples,
+    get_all_straight_3_tuples,
     get_all_straight_tuples,
 )
 
@@ -105,4 +107,38 @@ def test_get_all_rectangles_tuples(state: np.ndarray):
         (1, 3, 0, 7),
         (3, 0, 0, 0),
         (0, 1, 0, 0),
+    ]
+
+
+def test_get_all_straight_3_tuples(state: np.ndarray):
+    tuples = get_all_straight_3_tuples(state=state)
+
+    assert tuples == [
+        (6, 0, 3),
+        (0, 3, 2),
+        (7, 1, 0),
+        (1, 0, 1),
+        (1, 3, 0),
+        (3, 0, 1),
+        (7, 0, 0),
+        (0, 0, 0),
+        (6, 7, 1),
+        (7, 1, 7),
+        (0, 1, 3),
+        (1, 3, 0),
+        (3, 0, 0),
+        (0, 0, 0),
+        (2, 1, 1),
+        (1, 1, 0),
+    ]
+
+
+def test_get_all_corners_3_tuples(state: np.ndarray):
+    tuples = get_all_corners_3_tuples(state=state)
+
+    assert tuples == [
+        (6, 0, 7),
+        (2, 3, 1),
+        (7, 0, 1),
+        (0, 0, 1),
     ]
