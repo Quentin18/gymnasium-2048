@@ -11,7 +11,9 @@ from typing import Sequence
 import numpy as np
 
 from gymnasium_2048.agents.ntuple.factory import (
+    get_all_corners_3_tuples,
     get_all_rectangles_tuples,
+    get_all_straight_3_tuples,
     get_all_straight_tuples,
 )
 from gymnasium_2048.agents.ntuple.network import NTupleNetwork
@@ -230,3 +232,26 @@ class NTupleNetworkTDPolicy(NTupleNetworkBasePolicy):
 
     def save(self, path: str | pathlib.Path | io.BufferedIOBase) -> None:
         self.net.save(path=path)
+
+
+class NTupleNetworkTDPolicySmall(NTupleNetworkTDPolicy):
+    """
+    N-tuple network policy using Temporal Difference Learning with 3-tuples.
+    """
+
+    @staticmethod
+    def _make_network() -> NTupleNetwork:
+        return NTupleNetwork(shapes=[(15, 15, 15) for _ in range(20)])
+
+    @staticmethod
+    def _get_tuples(state: np.ndarray) -> Sequence[Sequence[int]]:
+        return [
+            *get_all_straight_3_tuples(state=state),
+            *get_all_corners_3_tuples(state=state),
+        ]
+
+    @classmethod
+    def load(cls, path: str | bytes | os.PathLike) -> NTupleNetworkBasePolicy:
+        policy = NTupleNetworkTDPolicySmall()
+        policy.net = NTupleNetwork.load(path=path)
+        return policy

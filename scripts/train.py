@@ -11,6 +11,7 @@ from gymnasium_2048.agents.ntuple import (
     NTupleNetworkBasePolicy,
     NTupleNetworkQLearningPolicy,
     NTupleNetworkTDPolicy,
+    NTupleNetworkTDPolicySmall,
 )
 
 logging.basicConfig(
@@ -32,7 +33,7 @@ def parse_args() -> argparse.Namespace:
         "--algo",
         default="tdl",
         help="RL Algorithm",
-        choices=["ql", "tdl"],
+        choices=["ql", "tdl", "tdl-small"],
     )
     parser.add_argument(
         "--env",
@@ -103,6 +104,7 @@ def make_policy(algo: str, trained_agent: str) -> NTupleNetworkBasePolicy:
     algo_policy_map = {
         "ql": NTupleNetworkQLearningPolicy,
         "tdl": NTupleNetworkTDPolicy,
+        "tdl-small": NTupleNetworkTDPolicySmall,
     }
     policy = algo_policy_map[algo]
     return policy.load(trained_agent) if trained_agent else policy()
