@@ -146,6 +146,7 @@ def evaluate(
     env: gym.Env,
     policy: NTupleNetworkBasePolicy,
     eval_episodes: int,
+    show_progress: bool = False,
 ) -> dict[str, Any]:
     """
     Evaluates the performance of the current policy.
@@ -159,13 +160,20 @@ def evaluate(
     :param env: Game environment.
     :param policy: Policy to evaluate.
     :param eval_episodes: Number of games to play.
+    :param show_progress: True to show progress, False otherwise.
     :return: Performance measures.
     """
     winning_rate = 0
     total_score = 0
     max_tile = 0
 
-    for _ in range(eval_episodes):
+    iterator = (
+        trange(eval_episodes, desc="Evaluate", unit="episode", leave=False)
+        if show_progress
+        else range(eval_episodes)
+    )
+
+    for _ in iterator:
         info = play_game(env=env, policy=policy)
         winning_rate += int(2 ** info["max"] >= 2048)
         total_score += info["total_score"]
@@ -176,6 +184,32 @@ def evaluate(
         "mean_score": total_score / eval_episodes,
         "max_tile": max_tile,
     }
+
+
+def log_eval_metrics(episode: int, metrics: dict[str, Any]) -> None:
+    logger.info(
+        "episode %d: winning rate = %.2f, mean score = %.2f, max tile = %d",
+        episode,
+        metrics["winning_rate"],
+        metrics["mean_score"],
+        metrics["max_tile"],
+    )
+
+
+def save_best_policy(out_dir: str, policy: NTupleNetworkBasePolicy) -> None:
+    best_model_path = os.path.join(out_dir, "best_n_tuple_network_policy.zip")
+    logger.info("new best model saved to %s", best_model_path)
+    policy.save(path=best_model_path)
+
+
+def save_checkpoint(
+    episode: int,
+    out_dir: str,
+    policy: NTupleNetworkBasePolicy,
+) -> None:
+    checkpoint_path = os.path.join(out_dir, f"checkpoint_episode_{episode}.zip")
+    logger.info("checkpoint saved to %s", checkpoint_path)
+    policy.save(path=checkpoint_path)
 
 
 def train() -> None:
@@ -189,31 +223,34 @@ def train() -> None:
 
     logger.info("start training n-tuple network")
 
-    for e in trange(args.n_episodes, desc="Train"):
-        play_game(env=env, policy=policy, learn=True, learning_rate=args.learning_rate)
-
-        if e % args.eval_freq == 0:
-            metrics = evaluate(env=env, policy=policy, eval_episodes=args.eval_episodes)
-            logger.info(
-                "episode %d: winning rate = %.2f, mean score = %.2f, max tile = %d",
-                e,
-                metrics["winning_rate"],
-                metrics["mean_score"],
-                metrics["max_tile"],
+    with trange(1, args.n_episodes + 1, desc="Train", unit="episode") as pbar:
+        for e in pbar:
+            play_game(
+                env=env,
+                policy=policy,
+                learn=True,
+                learning_rate=args.learning_rate,
             )
-            if metrics["mean_score"] > best_mean_score:
-                logger.info("new best model")
-                best_mean_score = metrics["mean_score"]
-                policy.save(
-                    path=os.path.join(args.out_dir, "best_n_tuple_network_policy.zip")
+
+            if e % args.eval_freq == 0 or e == args.n_episodes:
+                metrics = evaluate(
+                    env=env,
+                    policy=policy,
+                    eval_episodes=args.eval_episodes,
+                    show_progress=True,
                 )
+                log_eval_metrics(episode=e, metrics=metrics)
 
-        if e % args.save_freq == 0:
-            policy.save(path=os.path.join(args.out_dir, f"checkpoint_episode_{e}.zip"))
+                if metrics["mean_score"] > best_mean_score:
+                    best_mean_score = metrics["mean_score"]
+                    save_best_policy(out_dir=args.out_dir, policy=policy)
 
-    policy.save(
-        path=os.path.join("models", f"checkpoint_episode_{args.n_episodes}.zip")
-    )
+                metrics["best_mean_score"] = best_mean_score
+                pbar.set_postfix(metrics)
+
+            if e % args.save_freq == 0 or e == args.n_episodes:
+                save_checkpoint(episode=e, out_dir=args.out_dir, policy=policy)
+
     env.close()
 
     logger.info("end training n-tuple network")
