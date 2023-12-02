@@ -48,6 +48,16 @@ def parse_args() -> argparse.Namespace:
         default=42,
         help="random generator seed",
     )
+    parser.add_argument(
+        "--record-video",
+        action="store_true",
+        help="flag to record videos of episodes",
+    )
+    parser.add_argument(
+        "--video-folder",
+        default="videos",
+        help="path to videos folder",
+    )
     args = parser.parse_args()
     return args
 
@@ -96,6 +106,14 @@ def enjoy() -> None:
 
     np.random.seed(args.seed)
     env = gym.make(args.env, render_mode="human")
+    if args.record_video:
+        env = gym.wrappers.RecordVideo(
+            env,
+            video_folder=args.video_folder,
+            episode_trigger=lambda _: True,
+            disable_logger=True,
+        )
+
     policy = make_policy(algo=args.algo, trained_agent=args.trained_agent)
 
     for _ in trange(args.n_episodes, desc="Enjoy"):
