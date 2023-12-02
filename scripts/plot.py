@@ -46,14 +46,12 @@ def read_metrics(filename: str) -> pd.DataFrame:
                 line,
             ).groups()
 
-            data.append(
-                {
-                    "episode": int(episode),
-                    "winning_rate": float(winning_rate),
-                    "mean_score": float(mean_score),
-                    "max_tile": int(max_tile),
-                }
-            )
+            data.append({
+                "episode": int(episode),
+                "winning_rate": float(winning_rate),
+                "mean_score": float(mean_score),
+                "max_tile": int(max_tile),
+            })
 
     return pd.DataFrame(data)
 
