@@ -23,12 +23,13 @@ classifiers = [
 ]
 dependencies = [
     "gymnasium==0.29.1",
-    "pygame==2.5.1",
+    "pygame==2.5.2",
 ]
 
 [project.optional-dependencies]
 training = [
-    "matplotlib==3.8.0",
+    "matplotlib==3.8.2",
+    "pandas==2.1.3",
     "tqdm==4.66.1",
 ]
 testing = ["pytest"]
