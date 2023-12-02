@@ -11,6 +11,7 @@ from gymnasium_2048.agents.ntuple import (
     NTupleNetworkTDPolicy,
     NTupleNetworkTDPolicySmall,
 )
+from gymnasium_2048.agents.ntuple.search import ExpectimaxSearch
 
 plt.style.use("ggplot")
 
@@ -181,6 +182,7 @@ def evaluate() -> None:
     env = make_env(env_id=args.env)
     if args.algo is not None and args.trained_agent is not None:
         policy = make_policy(algo=args.algo, trained_agent=args.trained_agent)
+        policy = ExpectimaxSearch(policy=policy)
     else:
         policy = None
 

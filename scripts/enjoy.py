@@ -11,6 +11,7 @@ from gymnasium_2048.agents.ntuple import (
     NTupleNetworkTDPolicy,
     NTupleNetworkTDPolicySmall,
 )
+from gymnasium_2048.agents.ntuple.search import ExpectimaxSearch
 
 
 def parse_args() -> argparse.Namespace:
@@ -117,6 +118,7 @@ def enjoy() -> None:
         env = gym.make(args.env, render_mode="human")
 
     policy = make_policy(algo=args.algo, trained_agent=args.trained_agent)
+    policy = ExpectimaxSearch(policy=policy)
 
     for _ in trange(args.n_episodes, desc="Enjoy"):
         play_game(env=env, policy=policy)
