@@ -96,9 +96,9 @@ class NTupleNetworkBasePolicy(ABC):
         :param state: The board state.
         :return: Next action to play.
         """
-        return np.argmax([
-            self.evaluate(state=state, action=action) for action in range(4)
-        ])
+        return np.argmax(
+            [self.evaluate(state=state, action=action) for action in range(4)]
+        )
 
     @abstractmethod
     def save(self, path: str | pathlib.Path | io.BufferedIOBase) -> None:
@@ -207,9 +207,9 @@ class NTupleNetworkTDPolicy(NTupleNetworkBasePolicy):
         after_state_tuples = self._get_tuples(state=after_state)
         after_state_value = self.net.predict(tuples=after_state_tuples)
 
-        next_action = np.argmax([
-            self.evaluate(state=next_state, action=a) for a in range(4)
-        ])
+        next_action = np.argmax(
+            [self.evaluate(state=next_state, action=a) for a in range(4)]
+        )
         next_after_state, next_reward, is_legal = TwentyFortyEightEnv.apply_action(
             board=next_state,
             action=next_action,
