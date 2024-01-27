@@ -4,6 +4,8 @@ import re
 import matplotlib.pyplot as plt
 import pandas as pd
 
+plt.style.use("ggplot")
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -60,11 +62,12 @@ def plot() -> None:
     args = parse_args()
     metrics = read_metrics(filename=args.input_path)
     metrics.set_index("episode", inplace=True)
-    metrics.plot(subplots=True, title=args.title, grid=True)
-    plt.tight_layout()
-    plt.show()
+    axs = metrics.plot(subplots=True, title=args.title, grid=True)
+    fig = axs[0].figure
+    fig.tight_layout()
+    fig.show()
     if args.output_path is not None:
-        plt.savefig(args.output_path)
+        fig.savefig(args.output_path)
 
 
 if __name__ == "__main__":
