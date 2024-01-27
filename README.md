@@ -133,6 +133,29 @@ See the arguments with the help command:
 python -m scripts.train -h
 ```
 
+### Plot Training Metrics
+
+To plot training metrics from logs, execute:
+
+```bash
+python -m scripts.plot \
+  -i train.log \
+  -t "Temporal Difference Learning" \
+  -o figures/training_tdl.png
+```
+
+See the arguments with the help command:
+
+```bash
+python -m scripts.plot -h
+```
+
+Here are the training metrics of trained policies over episodes:
+
+| TDL small                                      | TDL                                |
+|------------------------------------------------|------------------------------------|
+| ![TDL small](./figures/training_tdl_small.png) | ![TDL](./figures/training_tdl.png) |
+
 ### Enjoy a Trained Agent
 
 To see a trained agent in action, execute:
@@ -150,6 +173,39 @@ See the arguments with the help command:
 ```bash
 python -m scripts.enjoy -h
 ```
+
+### Evaluate a Trained Agent
+
+To evaluate the performance of a trained agent, execute:
+
+```bash
+python -m scripts.evaluate \
+  --algo tdl \
+  -i models/tdl/best_n_tuple_network_policy.zip \
+  -n 1000 \
+  --seed 42 \
+  -t "Temporal Difference Learning" \
+  -o figures/stats_tdl.png
+```
+
+See the arguments with the help command:
+
+```bash
+python -m scripts.evaluate -h
+```
+
+Here are the performances of trained policies:
+
+| TDL small                                   | TDL                             |
+|---------------------------------------------|---------------------------------|
+| ![TDL small](./figures/stats_tdl_small.png) | ![TDL](./figures/stats_tdl.png) |
+
+<details>
+<summary>Random policy performances</summary>
+
+![Random policy](./figures/stats_random_policy.png)
+
+</details>
 
 ## Tests
 
