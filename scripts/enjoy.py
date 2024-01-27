@@ -105,14 +105,16 @@ def enjoy() -> None:
     args = parse_args()
 
     np.random.seed(args.seed)
-    env = gym.make(args.env, render_mode="human")
     if args.record_video:
+        env = gym.make(args.env, render_mode="rgb_array")
         env = gym.wrappers.RecordVideo(
             env,
             video_folder=args.video_folder,
             episode_trigger=lambda _: True,
             disable_logger=True,
         )
+    else:
+        env = gym.make(args.env, render_mode="human")
 
     policy = make_policy(algo=args.algo, trained_agent=args.trained_agent)
 
