@@ -1,3 +1,4 @@
+# pylint: disable=too-few-public-methods
 import numpy as np
 
 from gymnasium_2048.agents.ntuple.policy import NTupleNetworkBasePolicy
