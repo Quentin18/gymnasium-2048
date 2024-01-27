@@ -6,6 +6,8 @@
 Gymnasium environment for the [Game 2048](https://en.wikipedia.org/wiki/2048_(video_game)) and game-playing agents using
 temporal difference learning of n-tuple networks.
 
+https://github.com/Quentin18/gymnasium-2048/assets/58831477/c630a605-d1da-412a-a284-75f5c28bab46
+
 <table>
     <tbody>
         <tr>
