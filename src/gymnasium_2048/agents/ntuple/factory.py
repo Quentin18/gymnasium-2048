@@ -35,12 +35,14 @@ def get_all_rectangles_tuples(state: np.ndarray) -> Sequence[Sequence[int]]:
     # square
     for row in range(state.shape[0] - 1):
         for col in range(state.shape[1] - 1):
-            tuples.append((
-                state[row, col],
-                state[row, col + 1],
-                state[row + 1, col + 1],
-                state[row + 1, col],
-            ))
+            tuples.append(
+                (
+                    state[row, col],
+                    state[row, col + 1],
+                    state[row + 1, col + 1],
+                    state[row + 1, col],
+                )
+            )
 
     return tuples
 
