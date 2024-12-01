@@ -1,7 +1,12 @@
 # Gymnasium 2048
 
 [![CI](https://github.com/Quentin18/gymnasium-2048/actions/workflows/build.yml/badge.svg)](https://github.com/Quentin18/gymnasium-2048/actions/workflows/build.yml)
-[![codestyle](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Python](https://img.shields.io/pypi/pyversions/gymnasium-2048.svg)](https://badge.fury.io/py/gymnasium-2048)
+[![PyPI](https://badge.fury.io/py/gymnasium-2048.svg)](https://badge.fury.io/py/gymnasium-2048)
+[![PyPI Downloads](https://static.pepy.tech/badge/gymnasium-2048)](https://pepy.tech/projects/gymnasium-2048)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 
 Gymnasium environment for the [Game 2048](https://en.wikipedia.org/wiki/2048_(video_game)) and game-playing agents using
 temporal difference learning of n-tuple networks.
@@ -234,6 +239,7 @@ To cite the repository in publications:
 
 ## References
 
+- [Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
 - [Szubert and Jaśkowski: Temporal Difference Learning of N-Tuple Networks
   for the Game 2048](https://www.cs.put.poznan.pl/wjaskowski/pub/papers/Szubert2014_2048.pdf)
 - [Guei and Wu: On Reinforcement Learning for the Game of 2048](https://arxiv.org/pdf/2212.11087.pdf)
