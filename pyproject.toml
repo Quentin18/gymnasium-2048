@@ -24,16 +24,16 @@ classifiers = [
 ]
 dependencies = [
     "gymnasium==0.29.1",
-    "pygame==2.5.2",
+    "pygame==2.6.1",
 ]
 
 [project.optional-dependencies]
 training = [
-    "matplotlib==3.8.2",
-    "moviepy==1.0.3",
-    "pandas==2.2.0",
-    "pyarrow==15.0.0",
-    "tqdm==4.66.1",
+    "matplotlib==3.9.3",
+    "moviepy==2.1.1",
+    "pandas==2.2.3",
+    "pyarrow==18.1.0",
+    "tqdm==4.67.1",
 ]
 testing = ["pytest"]
 quality = ["black[d]", "isort", "pylint"]
