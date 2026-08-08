@@ -12,10 +12,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -24,17 +24,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install .[training,testing,quality]
 
-      - name: Check isort
-        uses: isort/isort-action@v1
+      - name: Run Ruff linter
+        run: ruff check --output-format=github
 
-      - name: Check black
-        run: |
-          black --check --diff --preview .
-
-      - name: Check pylint
-        run: |
-          pylint $(git ls-files '*.py')
+      - name: Run Ruff formatter
+        run: ruff format --check --diff
 
       - name: Test with pytest
-        run: |
-          pytest
+        run: pytest

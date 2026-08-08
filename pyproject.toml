@@ -37,35 +37,21 @@ training = [
     "tqdm==4.70.0",
 ]
 testing = ["pytest"]
-quality = ["black[d]", "isort", "pylint"]
+quality = ["ruff"]
 
 [project.urls]
 Repository = "https://github.com/Quentin18/gymnasium-2048"
 
-[tool.black]
-line-length = 88
+[tool.ruff]
+target-version = "py310"
 
-[tool.isort]
-profile = "black"
-
-[tool.pep8]
-max-line-length = "88"
-
-[tool.pylint."MESSAGES CONTROL"]
-max-line-length = 88
-disable = [
-    "attribute-defined-outside-init",
-    "duplicate-code",
-    "inconsistent-return-statements",
-    "invalid-name",
-    "missing-class-docstring",
-    "missing-function-docstring",
-    "missing-module-docstring",
-    "no-member",
-    "too-many-arguments",
-    "too-many-instance-attributes",
-    "too-many-locals",
-    "too-many-positional-arguments",
+[tool.ruff.lint]
+select = [
+    "I", # isort
+    "PL", # pylint
+]
+ignore = [
+    "PLR2004",
 ]
 
 [tool.pytest.ini_options]

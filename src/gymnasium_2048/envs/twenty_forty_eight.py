@@ -239,9 +239,9 @@ class TwentyFortyEightEnv(gym.Env):
         self,
         action: ActType,
     ) -> tuple[ObsType, SupportsFloat, bool, bool, dict[str, Any]]:
-        assert self.action_space.contains(
-            action
-        ), f"{action!r} ({type(action)}) invalid"
+        assert self.action_space.contains(action), (
+            f"{action!r} ({type(action)}) invalid"
+        )
 
         next_board, self.step_score, self.is_legal = self.apply_action(
             board=self.board,

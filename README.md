@@ -5,8 +5,7 @@
 [![PyPI](https://badge.fury.io/py/gymnasium-2048.svg)](https://badge.fury.io/py/gymnasium-2048)
 [![PyPI Downloads](https://static.pepy.tech/badge/gymnasium-2048)](https://pepy.tech/projects/gymnasium-2048)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 Gymnasium environment for the [Game 2048](https://en.wikipedia.org/wiki/2048_(video_game)) and game-playing agents using
 temporal difference learning of n-tuple networks.
@@ -71,10 +70,8 @@ This representation is mostly used for deep convolutional neural networks (DCNN)
 
 ### Rewards
 
-At each step, for each tile merge, the player gains a reward
-equal to the value of the new tile.
-The total reward, corresponding to the game score, is the
-sum of rewards obtained throughout the game.
+At each step, for each tile merge, the player gains a reward equal to the value of the new tile. The total reward,
+corresponding to the game score, is the sum of rewards obtained throughout the game.
 
 ### Starting State
 
@@ -240,8 +237,7 @@ To cite the repository in publications:
 ## References
 
 - [Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
-- [Szubert and Jaśkowski: Temporal Difference Learning of N-Tuple Networks
-  for the Game 2048](https://www.cs.put.poznan.pl/mszubert/pub/szubert2014cig.pdf)
+- [Szubert and Jaśkowski: Temporal Difference Learning of N-Tuple Networks for the Game 2048](https://www.cs.put.poznan.pl/mszubert/pub/szubert2014cig.pdf)
 - [Guei and Wu: On Reinforcement Learning for the Game of 2048](https://arxiv.org/pdf/2212.11087.pdf)
 
 ## Author
