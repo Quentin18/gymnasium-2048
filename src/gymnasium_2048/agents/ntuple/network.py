@@ -56,8 +56,7 @@ class NTupleNetwork:
         :param tuples: The individual n-tuples.
         :return: The prediction of the network.
         """
-        assert len(tuples) == len(self.weights)
-        return sum(w[t] for w, t in zip(self.weights, tuples))
+        return sum(w[t] for w, t in zip(self.weights, tuples, strict=True))
 
     def update(self, tuples: Sequence[Sequence[int]], delta: float) -> None:
         """
@@ -66,8 +65,7 @@ class NTupleNetwork:
         :param tuples: The individual n-tuples.
         :param delta: The delta to add.
         """
-        assert len(tuples) == len(self.weights)
-        for w, t in zip(self.weights, tuples):
+        for w, t in zip(self.weights, tuples, strict=True):
             w[t] += delta
 
     def save(self, path: str | pathlib.Path | io.BufferedIOBase) -> None:

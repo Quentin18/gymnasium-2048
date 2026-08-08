@@ -35,7 +35,7 @@ def parse_args() -> argparse.Namespace:
 def read_metrics(filename: str) -> pd.DataFrame:
     data = []
 
-    with open(filename, "r", encoding="utf-8") as file:
+    with open(filename, encoding="utf-8") as file:
         for line in file:
             if "mean score" not in line:
                 continue

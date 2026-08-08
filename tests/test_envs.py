@@ -1,4 +1,3 @@
-# pylint: disable=protected-access,redefined-outer-name
 from unittest.mock import MagicMock, patch
 
 import gymnasium as gym

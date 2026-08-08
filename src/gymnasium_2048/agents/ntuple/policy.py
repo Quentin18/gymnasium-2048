@@ -6,7 +6,7 @@ import pathlib
 import tempfile
 import zipfile
 from abc import ABC, abstractmethod
-from typing import Sequence
+from collections.abc import Sequence
 
 import numpy as np
 
@@ -117,7 +117,7 @@ class NTupleNetworkQLearningPolicy(NTupleNetworkBasePolicy):
     functions for each of the possible game moves.
     """
 
-    def __init__(self) -> None:  # pylint: disable=super-init-not-called
+    def __init__(self) -> None:
         self.nets = [self._make_network() for _ in range(4)]
 
     def evaluate(self, state: np.ndarray, action: int) -> float:
