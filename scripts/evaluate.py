@@ -168,7 +168,9 @@ def plot_statistics(
     axs[1, 1].set_ylabel("Count")
     axs[1, 1].set_title("Score")
 
-    fig.suptitle(title)
+    if title:
+        fig.suptitle(title)
+
     fig.tight_layout()
 
     return fig

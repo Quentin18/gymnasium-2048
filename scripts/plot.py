@@ -40,13 +40,15 @@ def read_metrics(filename: str) -> pd.DataFrame:
             if "mean score" not in line:
                 continue
 
-            episode, winning_rate, mean_score, max_tile = re.search(
+            m = re.search(
                 (
                     r"episode (\d+): winning rate = (\d+\.\d+), "
                     r"mean score = (\d+\.\d+), max tile = (\d+)"
                 ),
                 line,
-            ).groups()
+            )
+            assert m is not None
+            episode, winning_rate, mean_score, max_tile = m.groups()
 
             data.append(
                 {

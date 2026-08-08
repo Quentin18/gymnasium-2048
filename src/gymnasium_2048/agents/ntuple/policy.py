@@ -98,7 +98,7 @@ class NTupleNetworkBasePolicy(ABC):
         """
         return np.argmax(
             [self.evaluate(state=state, action=action) for action in range(4)]
-        )
+        ).item()
 
     @abstractmethod
     def save(self, path: str | pathlib.Path | io.BufferedIOBase) -> None:
@@ -160,17 +160,17 @@ class NTupleNetworkQLearningPolicy(NTupleNetworkBasePolicy):
     @classmethod
     def load(cls, path: str | bytes | os.PathLike) -> NTupleNetworkBasePolicy:
         policy = NTupleNetworkQLearningPolicy()
-        with zipfile.ZipFile(path, "r") as archive:
+        with zipfile.ZipFile(path, "r") as archive:  # type: ignore[ty:no-matching-overload]
             for i, filename in enumerate(sorted(archive.namelist())):
                 with archive.open(filename) as file:
-                    policy.nets[i] = NTupleNetwork.load(file)
+                    policy.nets[i] = NTupleNetwork.load(file)  # type: ignore[ty:invalid-argument-type]
         return policy
 
     def save(self, path: str | pathlib.Path | io.BufferedIOBase) -> None:
         with zipfile.ZipFile(path, "w") as archive:
             for i, net in enumerate(self.nets):
                 with tempfile.NamedTemporaryFile() as file:
-                    net.save(file)
+                    net.save(file)  # type: ignore[ty:invalid-argument-type]
                     archive.write(file.name, f"net_{i}.zip")
 
 
@@ -209,7 +209,7 @@ class NTupleNetworkTDPolicy(NTupleNetworkBasePolicy):
 
         next_action = np.argmax(
             [self.evaluate(state=next_state, action=a) for a in range(4)]
-        )
+        ).item()
         next_after_state, next_reward, is_legal = TwentyFortyEightEnv.apply_action(
             board=next_state,
             action=next_action,

@@ -35,7 +35,7 @@ class NTupleNetwork:
         :return: New n-tuple network instance with loaded parameters.
         """
         net = NTupleNetwork(shapes=[])
-        with zipfile.ZipFile(path, "r") as archive:
+        with zipfile.ZipFile(path, "r") as archive:  # type: ignore[ty:no-matching-overload]
             for i in range(len(archive.filelist)):
                 with archive.open(f"weights_{i}.npy", "r") as file:
                     net.weights.append(np.load(file))

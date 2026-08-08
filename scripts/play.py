@@ -66,7 +66,7 @@ def play() -> None:
             logger.info("action: %d", action)
             _, _, terminated, truncated, info = env.step(action)
 
-        env.unwrapped.clock.tick(FPS)
+        env.unwrapped.clock.tick(FPS)  # type: ignore[ty:unresolved-attribute]
 
     env.close()
 

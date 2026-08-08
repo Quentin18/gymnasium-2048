@@ -37,7 +37,7 @@ training = [
     "tqdm==4.70.0",
 ]
 testing = ["pytest"]
-quality = ["ruff"]
+quality = ["ruff", "ty"]
 
 [project.urls]
 Repository = "https://github.com/Quentin18/gymnasium-2048"

@@ -1,10 +1,10 @@
-from typing import Any
+from typing import Any, cast
 
 import gymnasium as gym
 import numpy as np
 import pygame
 from gymnasium import spaces
-from gymnasium.core import ActType, ObsType, RenderFrame, SupportsFloat
+from gymnasium.core import RenderFrame
 
 WINDOW_WIDTH = 400
 WINDOW_HEIGHT = 400
@@ -38,7 +38,7 @@ FONT_SCORE_COLOR = (0, 0, 0)
 FONT_SIZE = 40
 
 
-class TwentyFortyEightEnv(gym.Env):
+class TwentyFortyEightEnv(gym.Env[np.ndarray, int]):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 4}
 
     def __init__(
@@ -59,15 +59,16 @@ class TwentyFortyEightEnv(gym.Env):
         # 0: up, 1: right, 2: down, 3: left
         self.action_space = spaces.Discrete(4)
 
-        assert render_mode is None or render_mode in self.metadata["render_modes"]
+        render_modes = cast(list[str], self.metadata["render_modes"])
+        assert render_mode is None or render_mode in render_modes
         self.render_mode = render_mode
 
         self.window = None
         self.clock = None
         self.font = None
 
-    def _get_obs(self) -> ObsType:
-        observation = np.zeros(
+    def _get_obs(self) -> np.ndarray:
+        observation = np.zeros(  # type: ignore[ty:no-matching-overload]
             self.observation_space.shape,
             dtype=self.observation_space.dtype,
         )
@@ -100,11 +101,14 @@ class TwentyFortyEightEnv(gym.Env):
         *,
         seed: int | None = None,
         options: dict[str, Any] | None = None,
-    ) -> tuple[ObsType, dict[str, Any]]:
+    ) -> tuple[np.ndarray, dict[str, Any]]:
         super().reset(seed=seed)
 
         self.board = np.zeros(
-            (self.observation_space.shape[0], self.observation_space.shape[1]),
+            (
+                self.observation_space.shape[0],  # type: ignore[ty:not-subscriptable]
+                self.observation_space.shape[1],  # type: ignore[ty:not-subscriptable]
+            ),
             dtype=np.uint8,
         )
         self.step_score = 0
@@ -199,7 +203,7 @@ class TwentyFortyEightEnv(gym.Env):
     def apply_action(
         cls,
         board: np.ndarray,
-        action: ActType,
+        action: int,
     ) -> tuple[np.ndarray, int, bool]:
         """Apply an action to the board without spawning a new tile."""
         action_func = (cls._up, cls._right, cls._down, cls._left)
@@ -237,8 +241,8 @@ class TwentyFortyEightEnv(gym.Env):
 
     def step(
         self,
-        action: ActType,
-    ) -> tuple[ObsType, SupportsFloat, bool, bool, dict[str, Any]]:
+        action: int,
+    ) -> tuple[np.ndarray, int, bool, bool, dict[str, Any]]:
         assert self.action_space.contains(action), (
             f"{action!r} ({type(action)}) invalid"
         )
@@ -280,6 +284,8 @@ class TwentyFortyEightEnv(gym.Env):
         return FONT_DARK_COLOR if value < 8 else FONT_LIGHT_COLOR
 
     def _draw_board(self, canvas: pygame.Surface) -> None:
+        assert self.font is not None
+
         board_left = BOARD_PADDING
         board_right = BOARD_PADDING
         board_width = WINDOW_WIDTH - 2 * BOARD_PADDING
@@ -318,6 +324,8 @@ class TwentyFortyEightEnv(gym.Env):
                 canvas.blit(source=text_surface, dest=text_rect)
 
     def _draw_score(self, canvas: pygame.Surface) -> None:
+        assert self.font is not None
+
         board_width = WINDOW_WIDTH - 2 * BOARD_PADDING
         score_surface = self.font.render(
             f"Score: {self.total_score}",
@@ -333,7 +341,7 @@ class TwentyFortyEightEnv(gym.Env):
         )
         canvas.blit(source=score_surface, dest=score_rect)
 
-    def _render_frame(self) -> RenderFrame | list[RenderFrame]:
+    def _render_frame(self) -> RenderFrame | list[RenderFrame] | None:
         if self.window is None and self.render_mode == "human":
             pygame.init()
             pygame.display.init()
@@ -356,14 +364,21 @@ class TwentyFortyEightEnv(gym.Env):
         self._draw_score(canvas=canvas)
 
         if self.render_mode == "human":
+            assert self.window is not None
+            assert self.clock is not None
+
             self.window.blit(canvas, canvas.get_rect())
             pygame.event.pump()
             pygame.display.update()
-            self.clock.tick(self.metadata["render_fps"])
-        else:  # rgb_array
-            return np.transpose(
-                np.array(pygame.surfarray.pixels3d(canvas)), axes=(1, 0, 2)
-            )
+            render_fps = cast(int, self.metadata["render_fps"])
+            self.clock.tick(render_fps)
+            return None
+
+        # rgb_array
+        return np.transpose(
+            np.array(pygame.surfarray.pixels3d(canvas)),
+            axes=(1, 0, 2),
+        )
 
     def close(self) -> None:
         if self.window is not None:

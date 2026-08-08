@@ -30,5 +30,8 @@ jobs:
       - name: Run Ruff formatter
         run: ruff format --check --diff
 
+      - name: Run ty type checker
+        run: ty check
+
       - name: Test with pytest
         run: pytest
