@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gymnasium_2048"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
     { name = "Quentin Deschamps", email = "quentindeschamps18@gmail.com" },
 ]
