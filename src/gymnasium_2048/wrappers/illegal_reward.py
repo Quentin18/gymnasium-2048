@@ -23,4 +23,4 @@ class IllegalReward(gym.Wrapper):
         observation, reward, terminated, truncated, info = self.env.step(action)
         if not info["is_legal"]:
             return observation, self._illegal_reward, terminated, truncated, info
-        return observation, reward, truncated, truncated, info
+        return observation, reward, terminated, truncated, info
